@@ -1,0 +1,33 @@
+.header-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.header-container__wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 1000px;
+  background-color: #3f3d3d;
+  color: #fff;
+  border-radius: 20px;
+  padding: 30px 20px;
+}
+
+.header__logo {
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.header__auth-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.header__button {
+  padding: 14px 16px;
+  border-radius: 10px;
+  background-color: #5ae4b6;
+  color: #000000;
+}

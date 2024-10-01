@@ -1,0 +1,24 @@
+.main-container {
+  padding: 80px 60px;
+}
+
+.main-container__wrap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  gap: 60px;
+  overflow: hidden;
+  justify-items: center;
+}
+
+@media (max-width: 1024px) {
+  .main-container__wrap {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-container__wrap {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
