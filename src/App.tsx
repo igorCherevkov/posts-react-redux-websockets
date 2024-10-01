@@ -13,6 +13,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegistrationPage } from "./pages/RegistrationPage";
 import {
   CHAT_ROUTE,
+  CONTACT_CHAT_ROUTE,
   ERROR_ROUTE,
   HOME_ROUTE,
   LOGIN_ROUTE,
@@ -24,6 +25,7 @@ import { checkAuth } from "./redux/actions/authActions";
 import { AppDispatch } from "./redux/store";
 import { ErrorPage } from "./pages/ErrorPage";
 import { ChatPage } from "./pages/ChatPage";
+import { ChatComponent } from "./components/Chat/Chat";
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -42,6 +44,7 @@ const App = () => {
         <Route path={LOGOUT} element={<Outlet />} />
         <Route path={ERROR_ROUTE} element={<ErrorPage />} />
         <Route path={CHAT_ROUTE} element={<ChatPage />} />
+        <Route path={CONTACT_CHAT_ROUTE} element={<ChatComponent />} />
       </Routes>
     </Router>
   );

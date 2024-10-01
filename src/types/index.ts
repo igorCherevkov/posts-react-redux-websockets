@@ -21,3 +21,10 @@ export type Tag = {
   name: string;
   posts: Post[];
 };
+
+export type Chat = {
+  id: number;
+  isGroup: boolean;
+  created_at: string;
+  updated_at: string;
+};

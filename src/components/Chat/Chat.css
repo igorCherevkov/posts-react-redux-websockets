@@ -34,12 +34,12 @@
 
 .my-message {
   align-self: flex-end;
-  background-color: #dcf8c6;
+  background-color: green;
 }
 
 .contact-message {
   align-self: flex-start;
-  background-color: #ececec;
+  background-color: rgb(90, 57, 143);
 }
 
 .chat-input {

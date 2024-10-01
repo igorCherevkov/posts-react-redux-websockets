@@ -20,7 +20,7 @@ export const usersReducer = (
       return {
         ...state,
         isLoading: false,
-        userProfile: action.payload,
+        anotherUser: action.payload,
         error: null,
       };
     case FETCH_USER_FAILURE:

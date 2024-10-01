@@ -16,6 +16,6 @@ export const authInitialState: UserState = {
 
 export const userInitialState: UserProfileType = {
   isLoading: false,
-  userProfile: null,
+  anotherUser: null,
   error: null,
 };

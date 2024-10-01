@@ -22,7 +22,7 @@ export type UserProfileActions =
 
 export type UserProfileType = {
   isLoading: boolean;
-  userProfile: UserProfile | null;
+  anotherUser: UserProfile | null;
   error: string | null;
 };
 

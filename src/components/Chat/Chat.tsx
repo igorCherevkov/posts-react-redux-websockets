@@ -1,32 +1,42 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
 
 import { RootState } from "../../redux/reducers/rootReducer";
 import "./Chat.css";
+import { useNavigate, useParams } from "react-router-dom";
+import { AppDispatch } from "../../redux/store";
+import { ERROR_ROUTE } from "../../consts/routes";
+import { fetchUser } from "../../redux/actions/usersActions";
 
-// Подключаемся к WebSocket серверу
 const socket = io("http://localhost:8000");
 
 export const ChatComponent = () => {
-  // Задаем фиксированные значения
-  const chatId = 1;
-  const currentUserId = 2;
-  const contactUserId = 1;
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  const contactUser = useSelector((state: RootState) => state.chatReducer);
+  const anotherUser = useSelector((state: RootState) => state.usersReducer);
   const user = useSelector((state: RootState) => state.authReducer.user);
+  const dispatch = useDispatch<AppDispatch>();
 
-  console.log(user, contactUser);
-
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
+  const chatId = 3;
+  const currentUserId = user?.id;
+  const contactUserId = anotherUser.anotherUser?.id;
 
   useEffect(() => {
-    if (2) {
+    if (id) {
       dispatch(fetchUser(id));
     }
   }, [dispatch, id, user, navigate]);
+
+  useEffect(() => {
+    if (anotherUser.error) {
+      navigate(ERROR_ROUTE);
+    }
+  }, [anotherUser.error, navigate]);
+
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
     // Присоединяемся к чату

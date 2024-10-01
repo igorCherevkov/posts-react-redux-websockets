@@ -36,10 +36,10 @@ export const UserPage = () => {
       {userProfile.isLoading ? (
         <Loader />
       ) : (
-        userProfile.userProfile && (
+        userProfile.anotherUser && (
           <UserProfile
             id={user ? user.id : null}
-            user={userProfile.userProfile}
+            user={userProfile.anotherUser}
           />
         )
       )}
