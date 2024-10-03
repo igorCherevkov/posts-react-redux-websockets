@@ -25,6 +25,7 @@ export type Tag = {
 export type Chat = {
   id: number;
   isGroup: boolean;
+  users: User[];
   created_at: string;
   updated_at: string;
 };

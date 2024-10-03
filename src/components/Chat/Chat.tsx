@@ -3,13 +3,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
 
 import { RootState } from "../../redux/reducers/rootReducer";
-import "./Chat.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppDispatch } from "../../redux/store";
 import { ERROR_ROUTE } from "../../consts/routes";
 import { fetchUser } from "../../redux/actions/usersActions";
+import { getChat } from "../../http/chat";
+import "./Chat.css";
 
 const socket = io("http://localhost:8000");
+
+interface Message {
+  userId: number;
+  message: string;
+}
 
 export const ChatComponent = () => {
   const { id } = useParams();
@@ -19,7 +25,7 @@ export const ChatComponent = () => {
   const user = useSelector((state: RootState) => state.authReducer.user);
   const dispatch = useDispatch<AppDispatch>();
 
-  const chatId = 3;
+  const [chatId, setChatId] = useState<number | null>(null);
   const currentUserId = user?.id;
   const contactUserId = anotherUser.anotherUser?.id;
 
@@ -27,7 +33,7 @@ export const ChatComponent = () => {
     if (id) {
       dispatch(fetchUser(id));
     }
-  }, [dispatch, id, user, navigate]);
+  }, [dispatch, id]);
 
   useEffect(() => {
     if (anotherUser.error) {
@@ -35,36 +41,44 @@ export const ChatComponent = () => {
     }
   }, [anotherUser.error, navigate]);
 
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [newMessage, setNewMessage] = useState<string>("");
 
   useEffect(() => {
-    // Присоединяемся к чату
-    socket.emit("joinChat", chatId);
+    const fetchChat = async () => {
+      try {
+        if (currentUserId && contactUserId) {
+          const res = await getChat([currentUserId, contactUserId], false);
+          setChatId(res.data.id);
 
-    // Слушаем сообщения из WebSocket
+          socket.emit("joinChat", res.data.id);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchChat();
+
     socket.on("message", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
-    // Очищаем слушатели при размонтировании компонента
     return () => {
       socket.off("message");
     };
-  }, [chatId]);
+  }, [contactUserId, currentUserId]);
 
   const sendMessage = () => {
-    if (newMessage.trim()) {
+    if (newMessage.trim() && chatId) {
       const messageData = {
         chatId,
-        userId: currentUserId, // Используем идентификатор текущего пользователя
+        userId: currentUserId,
         message: newMessage,
       };
 
-      // Отправляем сообщение через WebSocket
       socket.emit("sendMessage", messageData);
 
-      // Очищаем поле ввода после отправки
       setNewMessage("");
     }
   };
