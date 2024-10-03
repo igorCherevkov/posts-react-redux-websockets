@@ -8,6 +8,7 @@ import { getFirstLetter } from "../utils/getFirstLetter";
 
 export const ChatPage = () => {
   const [contacts, setContacts] = useState<User[]>([]);
+  const [chats, setChats] = useState([]);
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -21,28 +22,6 @@ export const ChatPage = () => {
 
     fetchContacts();
   }, []);
-
-  //   const handleCreateChat = async (contactId) => {
-  //     const currentUser = useSelector((state) => state.user); // Получаем текущего пользователя из Redux
-  //     const history = useHistory(); // Инициализируем хук истории
-
-  //     try {
-  //       // Отправляем запрос на создание чата
-  //       const response = await axios.post("http://localhost:8000/chats", {
-  //         usersIds: [currentUser.id, contactId], // Массив с ID пользователей
-  //         isGroup: false, // Указываем, что это приватный чат
-  //       });
-
-  //       // Получаем ID нового чата
-  //       const chatId = response.data.id;
-
-  //       // Перенаправляем пользователя в новый чат
-  //       history.push(`/chat/${chatId}`); // Замените на ваш путь к чату
-  //     } catch (error) {
-  //       console.error("Ошибка при создании чата:", error);
-  //       // Можно добавить обработку ошибки, например, показать уведомление
-  //     }
-  //   };
 
   return (
     <>
