@@ -1,57 +1,125 @@
 import { useEffect, useState } from "react";
 import { Header } from "../components/Header/Header";
-import { getAllContacts } from "../http/chat";
-import { User } from "../types";
-import { CONTACT_CHAT_ROUTE } from "../consts/routes";
-import { generatePath, Link } from "react-router-dom";
+import { getAllChats, getAllContacts, getChat } from "../http/chat";
+import { CONTACT_CHAT_ROUTE, GROUP_CHAT_ROUTE } from "../consts/routes";
+import { generatePath, Link, useNavigate } from "react-router-dom";
 import { getFirstLetter } from "../utils/getFirstLetter";
+import { RootState } from "../redux/reducers/rootReducer";
+import { useSelector } from "react-redux";
+import { GroupModal } from "../components/GroupModal/GroupModal";
 
 export const ChatPage = () => {
-  const [contacts, setContacts] = useState<User[]>([]);
+  const user = useSelector((state: RootState) => state.authReducer.user);
+
   const [chats, setChats] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchContacts = async () => {
+    const fetchChats = async () => {
+      if (!user?.id) return;
+
       try {
-        const response = await getAllContacts();
-        setContacts(response.data);
+        const response = await getAllChats(user.id);
+        setChats(response.data);
       } catch (error) {
-        console.error("Failed to fetch contacts:", error);
+        console.error("Failed to fetch chats:", error);
       }
     };
 
-    fetchContacts();
-  }, []);
+    const fetchUsers = async () => {
+      if (!user?.id) return;
+
+      try {
+        const response = await getAllContacts(user.id);
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Failed to fetch chats:", error);
+      }
+    };
+
+    fetchChats();
+    fetchUsers();
+  }, [user?.id]);
+
+  console.log(users);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleConfirmModal = async (selectedUsers) => {
+    try {
+      if (selectedUsers) {
+        const isGroup = true;
+        const res = await getChat([user?.id, ...selectedUsers], isGroup);
+        navigate(generatePath(GROUP_CHAT_ROUTE, { id: res.data.id }), {
+          state: { isGroup: true },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
       <Header />
-      {contacts.map((contact) => (
-        <div key={contact.id}>
-          <div className="info__meta meta">
-            {contact.userImg ? (
-              <img src={contact.userImg} alt="user img" className="meta__img" />
-            ) : (
-              <div className="meta__img meta__placeholder-img">
-                {getFirstLetter(contact.login)}
+
+      {chats.length > 0 &&
+        chats.map((contact) => (
+          <div key={contact.id}>
+            <div className="info__meta meta">
+              {contact.users[0].user.userImg ? (
+                <img
+                  src={contact.users[0].user.userImg}
+                  alt="user img"
+                  className="meta__img"
+                />
+              ) : (
+                <div className="meta__img meta__placeholder-img">
+                  {getFirstLetter(contact.users[0].user.login)}
+                </div>
+              )}
+              <div>
+                <div className="meta__login">{contact.users[0].user.login}</div>
+                <div className="meta__email">{contact.users[0].user.email}</div>
               </div>
-            )}
-            <div>
-              <div className="meta__login">{contact.login}</div>
-              <div className="meta__email">{contact.email}</div>
+              {contact.isGroup ? (
+                <Link
+                  to={generatePath(GROUP_CHAT_ROUTE, {
+                    id: String(contact.users[0].user.id),
+                  })}
+                >
+                  Начать чат
+                </Link>
+              ) : (
+                <Link
+                  to={generatePath(CONTACT_CHAT_ROUTE, {
+                    id: String(contact.users[0].user.id),
+                  })}
+                  state={{ isGroup: contact.isGroup }}
+                >
+                  Начать чат
+                </Link>
+              )}
             </div>
-            <Link
-              to={generatePath(CONTACT_CHAT_ROUTE, {
-                id: String(contact.id),
-              })}
-              // onClick={handleCreateChat}
-            >
-              Начать чат
-            </Link>
           </div>
-        </div>
-      ))}
-      <div>+ Создать групповой чат</div>
+        ))}
+      <button onClick={handleOpenModal}>+ Создать групповой чат</button>
+      <GroupModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmModal}
+        users={users} // Передаем всех пользователей в модалку
+      />
     </>
   );
 };

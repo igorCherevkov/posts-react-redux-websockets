@@ -15,6 +15,7 @@ import {
   CHAT_ROUTE,
   CONTACT_CHAT_ROUTE,
   ERROR_ROUTE,
+  GROUP_CHAT_ROUTE,
   HOME_ROUTE,
   LOGIN_ROUTE,
   LOGOUT,
@@ -26,6 +27,7 @@ import { AppDispatch } from "./redux/store";
 import { ErrorPage } from "./pages/ErrorPage";
 import { ChatPage } from "./pages/ChatPage";
 import { ChatComponent } from "./components/Chat/Chat";
+import { GroupChat } from "./components/GroupChat/GroupChat";
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -45,6 +47,7 @@ const App = () => {
         <Route path={ERROR_ROUTE} element={<ErrorPage />} />
         <Route path={CHAT_ROUTE} element={<ChatPage />} />
         <Route path={CONTACT_CHAT_ROUTE} element={<ChatComponent />} />
+        <Route path={GROUP_CHAT_ROUTE} element={<GroupChat />} />
       </Routes>
     </Router>
   );

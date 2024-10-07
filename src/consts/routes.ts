@@ -6,3 +6,4 @@ export const LOGOUT = "/logout";
 export const ERROR_ROUTE = "/error";
 export const CHAT_ROUTE = "/chat";
 export const CONTACT_CHAT_ROUTE = "/chat/:id";
+export const GROUP_CHAT_ROUTE = "/group-chat/:id";
