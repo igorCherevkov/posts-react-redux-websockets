@@ -25,9 +25,10 @@ import {
 import { checkAuth } from "./redux/actions/authActions";
 import { AppDispatch } from "./redux/store";
 import { ErrorPage } from "./pages/ErrorPage";
-import { ChatPage } from "./pages/ChatPage";
-import { ChatComponent } from "./components/Chat/Chat";
-import { GroupChat } from "./components/GroupChat/GroupChat";
+import { ChatPage } from "./pages/ChatPage/ChatPage";
+import { ChatComponent } from "./components/Chat/ChatComponent/ChatComponent";
+import { GroupChat } from "./components/Chat/GroupChat/GroupChat";
+import { ChatWrap } from "./components/Chat/ChatWrap/ChatWrap";
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -46,8 +47,14 @@ const App = () => {
         <Route path={LOGOUT} element={<Outlet />} />
         <Route path={ERROR_ROUTE} element={<ErrorPage />} />
         <Route path={CHAT_ROUTE} element={<ChatPage />} />
-        <Route path={CONTACT_CHAT_ROUTE} element={<ChatComponent />} />
-        <Route path={GROUP_CHAT_ROUTE} element={<GroupChat />} />
+        <Route
+          path={CONTACT_CHAT_ROUTE}
+          element={<ChatWrap Component={ChatComponent} />}
+        />
+        <Route
+          path={GROUP_CHAT_ROUTE}
+          element={<ChatWrap Component={GroupChat} />}
+        />
       </Routes>
     </Router>
   );

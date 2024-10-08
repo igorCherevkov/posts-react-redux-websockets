@@ -1,10 +1,10 @@
 import CircularProgress from "@mui/material/CircularProgress";
 
-import "./Loader.css";
+import styles from "./Loader.module.css";
 
 export const Loader = () => {
   return (
-    <div className="loader-container">
+    <div className={styles.loaderContainer}>
       <CircularProgress />
     </div>
   );

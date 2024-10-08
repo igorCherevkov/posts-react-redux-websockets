@@ -1,0 +1,60 @@
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  padding: 10px;
+}
+
+.meta:hover {
+  background-color: rgb(189, 182, 182);
+}
+
+.metaImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  margin-right: 10px;
+}
+
+.metaPlaceholderImg {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: #294fca;
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.groupAvatars {
+  display: flex;
+}
+
+.groupAvatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 5px;
+  font-size: 12px;
+}
+
+.metaInfo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.metaMessage {
+  color: #818181;
+  font-size: 14px;
+}

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import "./HomePage.css";
+import styles from "./HomePage.module.css"; // Импорт модульных стилей
 import { Header } from "../../components/Header/Header";
 import { fetchPosts } from "../../redux/actions/postsActions";
 import { RootState } from "../../redux/reducers/rootReducer";
@@ -31,8 +31,8 @@ export const HomePage = () => {
       {!isError && isEmpty && (
         <>
           <Header />
-          <main className="main-container">
-            <div className="main-container__wrap main">
+          <main className={styles.mainContainer}>
+            <div className={styles.mainWrap}>
               <FilledAlert message="Постов нет" severity="info" />
             </div>
           </main>
@@ -41,8 +41,8 @@ export const HomePage = () => {
       {!isEmpty && (
         <>
           <Header />
-          <main className="main-container">
-            <div className="main-container__wrap main">
+          <main className={styles.mainContainer}>
+            <div className={styles.mainWrap}>
               {posts.posts.map((post) => (
                 <Posts key={post.id} post={post} user={post.user} />
               ))}

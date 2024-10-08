@@ -5,7 +5,7 @@ import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { RiLoginCircleFill } from "react-icons/ri";
 
-import "./AuthForm.css";
+import styles from "./AuthForm.module.css";
 import { AuthProps } from "../../types/redux/authTypes";
 import { HOME_ROUTE } from "../../consts/routes";
 import { auth } from "../../redux/actions/authActions";
@@ -41,46 +41,46 @@ export const AuthForm = (props: AuthProps) => {
   );
 
   return (
-    <div className="form__wrap wrap">
-      <div className="wrap__container">
-        <form onSubmit={handleSubmitForm} className="form__container form">
-          <h1 className="form__title">{props.title}</h1>
-          <div className="form__input-container input-container">
+    <div className={styles.formWrap}>
+      <div className={styles.wrapContainer}>
+        <form onSubmit={handleSubmitForm} className={styles.formContainer}>
+          <h1 className={styles.formTitle}>{props.title}</h1>
+          <div className={styles.formInputContainer}>
             <input
               type="email"
-              className="input-container__input"
+              className={styles.inputContainerInput}
               placeholder="Email"
               name="email"
               required
             />
-            <MdEmail className="input-container__img-container" />
+            <MdEmail className={styles.inputContainerImg} />
           </div>
-          <div className="form__input-container input-container">
+          <div className={styles.formInputContainer}>
             <input
               type="text"
-              className="input-container__input"
+              className={styles.inputContainerInput}
               placeholder="Login"
               name="login"
               required
             />
-            <RiLoginCircleFill className="input-container__img-container" />
+            <RiLoginCircleFill className={styles.inputContainerImg} />
           </div>
-          <div className="form__input-container input-container">
+          <div className={styles.formInputContainer}>
             <input
               type="password"
-              className="input-container__input"
+              className={styles.inputContainerInput}
               placeholder="Password"
               name="password"
               required
             />
-            <RiLockPasswordFill className="input-container__img-container" />
+            <RiLockPasswordFill className={styles.inputContainerImg} />
           </div>
-          <button type="submit" className="input-container__button">
+          <button type="submit" className={styles.inputContainerButton}>
             {props.button}
           </button>
-          <div className="input-container__change-form change-form">
-            <span className="change-form__text">{props.spanText}</span>
-            <Link to={props.link} className="change-form__link">
+          <div className={styles.inputContainerChangeForm}>
+            <span className={styles.changeFormText}>{props.spanText}</span>
+            <Link to={props.link} className={styles.changeFormLink}>
               {props.linkText}
             </Link>
           </div>

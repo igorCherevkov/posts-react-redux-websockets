@@ -1,6 +1,6 @@
 import { generatePath, Link, useLocation } from "react-router-dom";
 
-import "./Posts.css";
+import styles from "./Posts.module.css";
 import { HOME_ROUTE, USER_PROFILE_ROUTE } from "../../consts/routes";
 import { getFirstLetter } from "../../utils/getFirstLetter";
 import { transformDate } from "../../utils/transformDate";
@@ -14,49 +14,53 @@ export const Posts = ({ post, user }: { post: Post; user: User }) => {
   }`;
 
   return (
-    <div className="main__post-card post-card">
-      <div className="post-card__meta meta-container">
+    <div className={styles.mainPostCard}>
+      <div className={styles.postCardMeta}>
         {user.userImg ? (
           <img
             src={user.userImg}
             alt="user img"
-            className="meta-container__img"
+            className={styles.metaContainerImg}
           />
         ) : (
-          <div className="meta-container__img author-img-placeholder">
+          <div
+            className={`${styles.metaContainerImg} ${styles.authorImgPlaceholder}`}
+          >
             {getFirstLetter(user.login)}
           </div>
         )}
-        <div className="meta-container__auth auth-container">
-          <div className="auth-container__email">{user.email}</div>
+        <div className={styles.metaContainerAuth}>
+          <div className={styles.authContainerEmail}>{user.email}</div>
 
           {location.pathname === HOME_ROUTE ? (
             <Link
               to={generatePath(USER_PROFILE_ROUTE, { id: String(user.id) })}
-              className="auth-container__login"
+              className={styles.authContainerLogin}
             >
               {user.login}
             </Link>
           ) : (
             <span>{user.login}</span>
           )}
-          <div className="auth-container__date">
+          <div className={styles.authContainerDate}>
             {transformDate(post.created_at)}
           </div>
         </div>
       </div>
-      <div className="post-card__img img-container">
+      <div className={styles.postCardImg}>
         {post.postImg ? (
-          <img src={imgUrl} alt="post img" className="img-container__img" />
+          <img src={imgUrl} alt="post img" className={styles.imgContainerImg} />
         ) : null}
       </div>
-      <div className="post-card__content content-container">
-        <div className="content-container__title">{post.title}</div>
-        <div className="content-container__text">{post.content}</div>
+      <div className={styles.postCardContent}>
+        <div className={styles.contentContainerTitle}>{post.title}</div>
+        <div className={styles.contentContainerText}>{post.content}</div>
       </div>
-      <div className="post-card__tags tags-container">
+      <div className={styles.postCardTags}>
         {post.tags.map((tag) => (
-          <span className="tags-container__tag">{tag.name}</span>
+          <span key={tag.name} className={styles.tagsContainerTag}>
+            {tag.name}
+          </span>
         ))}
       </div>
     </div>

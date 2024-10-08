@@ -1,13 +1,13 @@
 import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-import "./UserProfile.css";
+import styles from "./UserProfile.module.css"; // Импорт модульных стилей
 import { UserForRender } from "../../types/redux/usersTypes";
 import { getFirstLetter } from "../../utils/getFirstLetter";
 import { Posts } from "../Posts/Posts";
 import { FilledAlert } from "../Error/Error";
-import { useNavigate } from "react-router-dom";
 import { HOME_ROUTE } from "../../consts/routes";
-import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { addPost } from "../../redux/actions/postsActions";
 
@@ -27,10 +27,10 @@ export const UserProfile = ({
     event.preventDefault();
     const addPostContainer = event.currentTarget.parentNode as HTMLElement;
     const form = addPostContainer.querySelector(
-      ".add-post-form"
+      `.${styles.addPostForm}`
     ) as HTMLElement;
     const title = addPostContainer.querySelector(
-      ".add-post-container__title"
+      `.${styles.addPostContainerTitle}`
     ) as HTMLElement;
 
     title.style.display = "none";
@@ -41,17 +41,19 @@ export const UserProfile = ({
   const hideForm = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const formContainer = event.currentTarget.closest(
-      ".add-post-container"
+      `.${styles.addPostContainer}`
     ) as HTMLElement;
     const addPost = formContainer.querySelector(
-      ".add-post-container__title"
+      `.${styles.addPostContainerTitle}`
     ) as HTMLElement;
-    const form = formContainer.querySelector(".add-post-form") as HTMLElement;
+    const form = formContainer.querySelector(
+      `.${styles.addPostForm}`
+    ) as HTMLElement;
     const title = formContainer.querySelector(
-      ".add-post-form__post-title"
+      `.${styles.addPostFormPostTitle}`
     ) as HTMLInputElement;
     const content = formContainer.querySelector(
-      ".add-post-form__post-content"
+      `.${styles.addPostFormPostContent}`
     ) as HTMLInputElement;
 
     form.style.display = "none";
@@ -79,62 +81,54 @@ export const UserProfile = ({
   );
 
   return (
-    <div className="user-profile__container user-profile">
-      <div className="user-profile__info info">
-        <div className="info__meta meta">
+    <div className={styles.userProfileContainer}>
+      <div className={styles.userProfileInfo}>
+        <div className={styles.infoMeta}>
           {user.userImg ? (
-            <img src={user.userImg} alt="user img" className="meta__img" />
+            <img src={user.userImg} alt="user img" className={styles.metaImg} />
           ) : (
-            <div className="meta__img meta__placeholder-img">
+            <div className={`${styles.metaImg} ${styles.metaPlaceholderImg}`}>
               {getFirstLetter(user.login)}
             </div>
           )}
           <div>
-            <div className="meta__login">{user.login}</div>
-            <div className="meta__email">{user.email}</div>
+            <div className={styles.metaLogin}>{user.login}</div>
+            <div className={styles.metaEmail}>{user.email}</div>
           </div>
         </div>
         {id === user.id && (
-          <div className="user-profile__add-post-container add-post-container">
-            <span className="add-post-container__title" onClick={showForm}>
+          <div className={styles.addPostContainer}>
+            <span className={styles.addPostContainerTitle} onClick={showForm}>
               + Добавить пост
             </span>
-            <form
-              onSubmit={sendPost}
-              className="add-post-container__form add-post-form"
-            >
+            <form onSubmit={sendPost} className={styles.addPostForm}>
               <input
                 type="text"
                 name="title"
-                className="add-post-form__post-title"
+                className={styles.addPostFormPostTitle}
                 placeholder="Заголовок поста"
               />
               <textarea
                 name="content"
-                className="add-post-form__post-content"
+                className={styles.addPostFormPostContent}
                 placeholder="Текст поста"
               />
               <input
                 type="file"
                 name="postImg"
-                className="add-post-form__img"
+                className={styles.addPostFormImg}
                 accept=".jpg, .jpeg, .png"
               />
-              {/* <textarea
-                name="tags"
-                className="add-post-form__post-tags"
-                placeholder="Теги (через пробел)"
-              /> */}
-              <div className="add-post-form__buttons form-buttons">
+              <div className={styles.addPostFormButtons}>
                 <button
                   type="submit"
-                  id="add-post-form__post-button"
-                  className="add-post-form__post-button"
+                  id={styles.addPostFormPostButton}
+                  className={styles.addPostFormPostButton}
                 >
                   Добавить
                 </button>
                 <button
-                  className="add-post-form__post-button"
+                  className={styles.addPostFormPostButton}
                   onClick={hideForm}
                 >
                   X
@@ -144,8 +138,8 @@ export const UserProfile = ({
           </div>
         )}
       </div>
-      <main className="user-profile__main profile-main">
-        <div className="profile-main__container">
+      <main className={styles.userProfileMain}>
+        <div className={styles.profileMainContainer}>
           {isEmpty && <FilledAlert message="Постов нет" severity="info" />}
           {!isEmpty &&
             user.posts.map((post) => (

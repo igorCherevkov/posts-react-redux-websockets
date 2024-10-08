@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { generatePath, Link } from "react-router-dom";
 import { useCallback } from "react";
 
-import "./Header.css";
+import styles from "./Header.module.css";
 import {
   CHAT_ROUTE,
   LOGIN_ROUTE,
@@ -25,28 +25,28 @@ export const Header = () => {
   }, [dispatch]);
 
   return (
-    <header className="header-container">
-      <div className="header-container__wrap header">
-        <Link to="/" className="header__logo">
+    <header className={styles.headerContainer}>
+      <div className={`${styles.headerContainerWrap} header`}>
+        <Link to="/" className={styles.headerLogo}>
           MyPosts
         </Link>
-        <div className="header__auth-buttons">
+        <div className={styles.headerAuthButtons}>
           {user.isAuth ? (
             <>
-              <Link to={CHAT_ROUTE} className="header__button">
+              <Link to={CHAT_ROUTE} className={styles.headerButton}>
                 Чат
               </Link>
               <Link
                 to={generatePath(USER_PROFILE_ROUTE, {
                   id: String(user.user?.id),
                 })}
-                className="header__button"
+                className={styles.headerButton}
               >
                 Профиль
               </Link>
               <Link
                 to={LOGOUT}
-                className="header__button"
+                className={styles.headerButton}
                 onClick={handleLogout}
               >
                 Выйти
@@ -54,10 +54,10 @@ export const Header = () => {
             </>
           ) : (
             <>
-              <Link to={REGISTRATION_ROUTE} className="header__button">
+              <Link to={REGISTRATION_ROUTE} className={styles.headerButton}>
                 Зарегистрироваться
               </Link>
-              <Link to={LOGIN_ROUTE} className="header__button">
+              <Link to={LOGIN_ROUTE} className={styles.headerButton}>
                 Войти
               </Link>
             </>

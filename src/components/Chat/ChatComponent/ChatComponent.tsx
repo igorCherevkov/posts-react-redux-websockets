@@ -1,38 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
-
-import { RootState } from "../../redux/reducers/rootReducer";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { AppDispatch } from "../../redux/store";
-import { ERROR_ROUTE } from "../../consts/routes";
-import { fetchUser } from "../../redux/actions/usersActions";
-import { getChat, getChatMessages } from "../../http/chat";
-import "./Chat.css";
-import { Header } from "../Header/Header";
+import { fetchUser } from "../../../redux/actions/usersActions";
+import { getChat, getChatMessages } from "../../../http/chat";
+import styles from "./Chat.module.css";
 
 const socket = io("http://localhost:8000");
-
-interface Message {
-  userId: number;
-  message: string;
-}
 
 export const ChatComponent = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
   const { state } = useLocation();
   const isGroup = state.isGroup || false;
 
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [newMessage, setNewMessage] = useState<string>("");
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
 
-  const anotherUser = useSelector((state: RootState) => state.usersReducer);
-  const user = useSelector((state: RootState) => state.authReducer.user);
-  const dispatch = useDispatch<AppDispatch>();
+  const anotherUser = useSelector((state) => state.usersReducer);
+  const user = useSelector((state) => state.authReducer.user);
+  const dispatch = useDispatch();
 
-  const [chatId, setChatId] = useState<number | null>(null);
+  const [chatId, setChatId] = useState(null);
   const currentUserId = user?.id;
   const contactUserId = anotherUser.anotherUser?.id;
 
@@ -43,33 +34,11 @@ export const ChatComponent = () => {
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (anotherUser.error) {
-      navigate(ERROR_ROUTE);
-    }
-  }, [anotherUser.error, navigate]);
-
-  useEffect(() => {
-    const fetchMessages = async () => {
-      if (!chatId) return;
-
-      try {
-        const response = await getChatMessages(chatId);
-        setMessages(response.data);
-      } catch (error) {
-        console.error("Failed to fetch chats:", error);
-      }
-    };
-
-    fetchMessages();
-  }, [chatId]);
-
-  useEffect(() => {
     const fetchChat = async () => {
       try {
         if (currentUserId && contactUserId) {
           const res = await getChat([currentUserId, contactUserId], isGroup);
           setChatId(res.data.id);
-
           socket.emit("joinChat", res.data.id);
         }
       } catch (error) {
@@ -88,6 +57,27 @@ export const ChatComponent = () => {
     };
   }, [contactUserId, currentUserId, isGroup]);
 
+  useEffect(() => {
+    const fetchMessages = async () => {
+      if (!chatId) return;
+      try {
+        const response = await getChatMessages(chatId);
+        setMessages(response.data);
+      } catch (error) {
+        console.error("Failed to fetch messages:", error);
+      }
+    };
+
+    fetchMessages();
+  }, [chatId]);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   const sendMessage = () => {
     if (newMessage.trim() && chatId) {
       const messageData = {
@@ -97,32 +87,32 @@ export const ChatComponent = () => {
       };
 
       socket.emit("sendMessage", messageData);
-
       setNewMessage("");
     }
   };
 
   return (
     <>
-      <Header />
-
-      <div className="chat-container">
-        <div className="chat-header">
-          <h2>Чат с пользователем {contactUserId}</h2>
+      <div className={styles.chatContainer}>
+        <div className={styles.chatHeader}>
+          <h2>{isGroup ? "Групповой чат" : "Личный чат"}</h2>
         </div>
-        <div className="chat-messages">
+        <div className={styles.chatMessages} ref={chatContainerRef}>
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`message ${
-                msg.userId === currentUserId ? "my-message" : "contact-message"
+              className={`${styles.message} ${
+                msg.userId === currentUserId
+                  ? styles.myMessage
+                  : styles.contactMessage
               }`}
             >
               {msg.message}
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
-        <div className="chat-input">
+        <div className={styles.chatInput}>
           <input
             type="text"
             value={newMessage}

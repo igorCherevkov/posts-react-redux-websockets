@@ -1,10 +1,10 @@
-.header-container {
+.headerContainer {
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
-.header-container__wrap {
+.headerContainerWrap {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,17 +15,17 @@
   padding: 30px 20px;
 }
 
-.header__logo {
+.headerLogo {
   font-size: 24px;
   color: #ffffff;
 }
 
-.header__auth-buttons {
+.headerAuthButtons {
   display: flex;
   gap: 10px;
 }
 
-.header__button {
+.headerButton {
   padding: 14px 16px;
   border-radius: 10px;
   background-color: #5ae4b6;

@@ -1,4 +1,4 @@
-.main__post-card {
+.mainPostCard {
   max-width: 320px;
   display: flex;
   flex-direction: column;
@@ -8,29 +8,29 @@
   padding: 10px 0;
 }
 
-.post-card__meta {
+.postCardMeta {
   display: flex;
   align-items: center;
   padding: 0 20px 10px;
   font-size: 12px;
 }
 
-.meta-container__auth * {
+.metaContainerAuth * {
   font-size: 14px;
 }
 
-.auth-container__login {
+.authContainerLogin {
   color: #5ae4b6;
 }
 
-.meta-container__img {
+.metaContainerImg {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   margin-right: 20px;
 }
 
-.author-img-placeholder {
+.authorImgPlaceholder {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,13 +38,13 @@
   font-size: 20px;
 }
 
-.img-container__img {
+.imgContainerImg {
   width: 100%;
   height: auto;
   padding-bottom: 10px;
 }
 
-.content-container__title {
+.contentContainerTitle {
   font-size: 20px;
   font-weight: 600;
   display: flex;
@@ -52,16 +52,16 @@
   color: #5ae4b6;
 }
 
-.post-card__content {
+.postCardContent {
   padding: 0 20px 10px;
   overflow-wrap: break-word;
 }
 
-.post-card__tags :not(:last-child) {
+.postCardTags :not(:last-child) {
   margin-right: 10px;
 }
 
-.tags-container__tag {
+.tagsContainerTag {
   font-size: 14px;
   color: #b1adadb3;
 }

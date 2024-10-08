@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import "./GroupModal.css"; // Создай стили для модального окна
+import { useState } from "react";
+
+import styles from "./GroupModal.module.css";
 
 export const GroupModal = ({ isOpen, onClose, onConfirm, users }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -20,8 +21,8 @@ export const GroupModal = ({ isOpen, onClose, onConfirm, users }) => {
   if (!isOpen) return null; // Модалка рендерится только если открыта
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContent}>
         <h2>Выберите пользователей для группового чата</h2>
         <ul>
           {users.map((user) => (
